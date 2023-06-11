@@ -1,0 +1,65 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- No background color -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" /> <!-- Adjust the corner radius as needed -->
+            <solid android:color="@android:color/white" /> <!-- Replace with your desired background color -->
+            <padding
+                android:left="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:bottom="12dp" /> <!-- Adjust the padding as needed -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- No background color -->
+            <corners android:radius="8dp" /> <!-- Adjust the corner radius as needed -->
+            <padding
+                android:left="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:bottom="12dp" /> <!-- Adjust the padding as needed -->
+            <corners android:bottomRightRadius="0dp"
+                android:bottomLeftRadius="0dp" /> <!-- Adjust the corner radius individually if desired -->
+            <gradient
+                android:startColor="@android:color/transparent" android:endColor="@android:color/transparent" android:angle="45" /> <!-- Adjust the gradient angle as needed -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- No background color -->
+            <corners android:radius="8dp" /> <!-- Adjust the corner radius as needed -->
+            <padding
+                android:left="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:bottom="12dp" /> <!-- Adjust the padding as needed -->
+            <corners android:bottomRightRadius="0dp"
+                android:bottomLeftRadius="0dp" /> <!-- Adjust the corner radius individually if desired -->
+            <gradient
+                android:startColor="@android:color/transparent" android:endColor="@android:color/transparent" android:angle="45" /> <!-- Adjust the gradient angle as needed -->
+            <stroke
+                android:color="@android:color/transparent" android:width="0dp" /> <!-- No stroke width -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" /> <!-- No background color -->
+            <corners android:radius="8dp" /> <!-- Adjust the corner radius as needed -->
+            <padding
+                android:left="8dp"
+                android:top="8dp"
+                android:right="8dp"
+                android:bottom="12dp" /> <!-- Adjust the padding as needed -->
+            <corners android:bottomRightRadius="8dp"
+                android:bottomLeftRadius="8dp" /> <!-- Adjust the corner radius individually if desired -->
+            <gradient
+                android:startColor="#20000000" android:endColor="@android:color/transparent" android:angle="90" /> <!-- Adjust the gradient angle as needed -->
+        </shape>
+    </item>
+</layer-list>

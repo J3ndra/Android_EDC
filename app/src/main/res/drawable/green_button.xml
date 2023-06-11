@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color -->
+    <solid android:color="#00FF00" /> <!-- Replace with your desired green color value -->
+
+    <!-- Corner radius -->
+    <corners android:radius="8dp" /> <!-- Replace "8dp" with your desired corner radius -->
+
+    <!-- Border (optional) -->
+    <stroke
+        android:color="#00000000" android:width="1dp" /> <!-- Replace "1dp" with your desired border width -->
+
+</shape>
