@@ -90,8 +90,6 @@ class SaleEnterPinActivity : AppCompatActivity() {
         val btnClear = findViewById<Button>(R.id.btn_clear)
         val btnOk = findViewById<Button>(R.id.btn_ok)
 
-
-
         etPin1.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // No implementation needed

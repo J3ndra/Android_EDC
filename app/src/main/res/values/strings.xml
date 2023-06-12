@@ -70,4 +70,8 @@
     <string name="please_enter_your_pin_to_processed">Please enter your PIN to processed</string>
     <string name="settlements">Settlements</string>
     <string name="total">TOTAL</string>
+    <string name="abort">Abort</string>
+    <string name="enter_trace_id">Enter Trace ID</string>
+    <string name="home_icon">Home Icon</string>
+    <string name="trace_id">00001</string>
 </resources>

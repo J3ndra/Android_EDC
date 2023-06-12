@@ -1,20 +1,20 @@
 package com.junianto.posedc.menu.sale
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.nfc.NfcAdapter
-import android.nfc.Tag
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.junianto.posedc.MainActivity
 import com.junianto.posedc.R
 import com.junianto.posedc.util.CircleProgressView
 import com.junianto.posedc.util.NfcTagReader
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class SaleTapCardActivity : AppCompatActivity() {
@@ -63,13 +63,18 @@ class SaleTapCardActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
         val nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         nfcAdapter?.disableForegroundDispatch(this)
+        super.onPause()
     }
 
     override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
         circleProgressView.handleNfcIntent(intent)
+        super.onNewIntent(intent)
+    }
+
+    override fun onBackPressed() {
+        circleProgressView.stopTimer()
+        super.onBackPressed()
     }
 }

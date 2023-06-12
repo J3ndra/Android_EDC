@@ -27,6 +27,7 @@ class MenuActivity : AppCompatActivity() {
         val buttonList = listOf(
             MenuButton(R.drawable.sale_icon, "SALE", "Card Transaction"),
             MenuButton(R.drawable.settlement_icon, "SETTLEMENTS", "Sync of Transactions"),
+            MenuButton(R.drawable.abort_icon, "VOID", "Abort the Transaction"),
             // Add more button items as needed
         )
 

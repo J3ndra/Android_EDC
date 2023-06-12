@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.junianto.posedc.R
+import com.junianto.posedc.menu.abort.AbortActivity
+import com.junianto.posedc.menu.abort.AbortEnterPinActivity
 import com.junianto.posedc.menu.sale.SaleActivity
 import com.junianto.posedc.menu.sale.SaleTapCardActivity
 import com.junianto.posedc.menu.settlements.SettlementsPinActivity
@@ -42,6 +44,7 @@ class MenuAdapter(private val buttons: List<MenuButton>, private val context: Co
                 when (adapterPosition) {
                     0 -> context.startActivity(Intent(context, SaleTapCardActivity::class.java))
                     1 -> context.startActivity(Intent(context, SettlementsPinActivity::class.java))
+                    2 -> context.startActivity(Intent(context, AbortEnterPinActivity::class.java))
                 }
             }
         }

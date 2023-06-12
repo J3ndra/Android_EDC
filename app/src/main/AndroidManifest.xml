@@ -20,13 +20,24 @@
         android:theme="@style/Theme.POSEDC"
         tools:targetApi="31">
         <activity
+            android:name=".menu.abort.AbortDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".menu.abort.AbortEnterPinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".menu.abort.AbortActivity"
+            android:exported="false" />
+        <activity
             android:name=".menu.sale.SaleTapCardActivity"
             android:exported="true"
             android:launchMode="singleTask">
-            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/tech_list" />
+
             <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>
         </activity>
         <activity

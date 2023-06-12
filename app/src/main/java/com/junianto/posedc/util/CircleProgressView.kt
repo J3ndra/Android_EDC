@@ -1,25 +1,19 @@
 package com.junianto.posedc.util
 
 import android.app.Activity
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.nfc.NfcAdapter
-import android.nfc.NfcManager
 import android.nfc.Tag
-import android.nfc.tech.Ndef
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +23,8 @@ class CircleProgressView @JvmOverloads constructor(
 
     @Inject
     lateinit var nfcTagReader: NfcTagReader
+
+    private var timer: CountDownTimer? = null
 
     private val progressPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
@@ -86,7 +82,7 @@ class CircleProgressView @JvmOverloads constructor(
         val interval = 100L // Timer interval in milliseconds
         var elapsedTime = 0L
 
-        val timer = object : CountDownTimer(totalTime, interval) {
+        timer = object : CountDownTimer(totalTime, interval) {
             override fun onTick(millisUntilFinished: Long) {
                 elapsedTime = totalTime - millisUntilFinished
                 progress = elapsedTime.toFloat() / totalTime.toFloat()
@@ -99,7 +95,7 @@ class CircleProgressView @JvmOverloads constructor(
                 listener?.onTimerFinished(false)
             }
         }
-        timer.start()
+        timer?.start()
     }
 
     fun handleNfcIntent(intent: Intent) {
@@ -124,5 +120,15 @@ class CircleProgressView @JvmOverloads constructor(
             stringBuilder.append(String.format("%02x", byte))
         }
         return stringBuilder.toString()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        stopTimer()
+    }
+
+    fun stopTimer() {
+        timer?.cancel()
+        timer = null
     }
 }

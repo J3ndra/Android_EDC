@@ -1,8 +1,7 @@
-package com.junianto.posedc.menu.settlements
+package com.junianto.posedc.menu.abort
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -10,21 +9,17 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.junianto.posedc.MainActivity
 import com.junianto.posedc.R
+import com.junianto.posedc.menu.settlements.SettlementsActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class SettlementsPinActivity : AppCompatActivity() {
-
-    @RequiresApi(Build.VERSION_CODES.O)
+class AbortEnterPinActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sale_enter_pin)
+        setContentView(R.layout.activity_abort_enter_pin)
 
         // EditText
         val etPin1 = findViewById<TextView>(R.id.et_pin_1)
@@ -187,8 +182,7 @@ class SettlementsPinActivity : AppCompatActivity() {
 
         btnOk.setOnClickListener {
             if (checkPassword()) {
-                val intent = Intent(this, SettlementsActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                val intent = Intent(this, AbortActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
