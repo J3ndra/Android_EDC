@@ -66,4 +66,8 @@
     <string name="re_print_receipt">Re-print Receipt</string>
     <string name="payment_successful">Payment Successful</string>
     <string name="hoooray_your_payment_of_rp_100_000_is_successful">Hoooray! Your payment of Rp. 100.000 is successful!</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="please_enter_your_pin_to_processed">Please enter your PIN to processed</string>
+    <string name="settlements">Settlements</string>
+    <string name="total">TOTAL</string>
 </resources>

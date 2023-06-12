@@ -10,8 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.junianto.posedc.R
 import com.junianto.posedc.menu.sale.SaleActivity
-import com.junianto.posedc.menu.settlements.SettlementsActivity
-import com.junianto.posedc.util.TapCardActivity
+import com.junianto.posedc.menu.settlements.SettlementsPinActivity
 
 class MenuAdapter(private val buttons: List<MenuButton>, private val context: Context) : RecyclerView.Adapter<MenuAdapter.ButtonViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ButtonViewHolder {
@@ -41,7 +40,7 @@ class MenuAdapter(private val buttons: List<MenuButton>, private val context: Co
             itemView.setOnClickListener{
                 when (adapterPosition) {
                     0 -> context.startActivity(Intent(context, SaleActivity::class.java))
-                    1 -> context.startActivity(Intent(context, SettlementsActivity::class.java))
+                    1 -> context.startActivity(Intent(context, SettlementsPinActivity::class.java))
                 }
             }
         }

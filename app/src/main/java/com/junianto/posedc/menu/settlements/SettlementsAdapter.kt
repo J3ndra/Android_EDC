@@ -1,5 +1,6 @@
 package com.junianto.posedc.menu.settlements
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.junianto.posedc.R
 import com.junianto.posedc.database.model.Transaction
+import java.text.NumberFormat
+import java.util.Locale
 
 class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
     private var transactions: List<Transaction> = emptyList()
@@ -25,6 +28,7 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
         return transactions.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setTransactions(transactions: List<Transaction>) {
         this.transactions = transactions
         notifyDataSetChanged()
@@ -35,10 +39,12 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
         private val priceTextView: TextView = itemView.findViewById(R.id.priceTextView)
         private val transactionDateTextView: TextView = itemView.findViewById(R.id.transactionDateTextView)
 
+        @SuppressLint("SetTextI18n")
         fun bind(transaction: Transaction) {
-            transactionIdTextView.text = "Transaction ID: ${transaction.id}"
-            priceTextView.text = "Price: ${transaction.price}"
-            transactionDateTextView.text = "Transaction Date: ${transaction.transactionDate}"
+            transactionIdTextView.text = "TRACE NO : ${transaction.id}"
+            val formattedAmount = NumberFormat.getNumberInstance(Locale("en", "ID")).format(transaction.price)
+            priceTextView.text = "Rp. $formattedAmount"
+            transactionDateTextView.text = transaction.transactionDate
         }
     }
 }

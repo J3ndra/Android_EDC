@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#CCCCCC" /> <!-- Set the background color to grey (change color code as needed) -->
+    <stroke
+        android:color="#838383" android:width="1dp" /> <!-- Set the stroke width to 1dp (change width as needed) -->
+    <corners android:radius="0dp" /> <!-- Set the corner radius to 0dp for no rounded corners -->
+</shape>

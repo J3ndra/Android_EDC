@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import com.junianto.posedc.MainActivity
 import com.junianto.posedc.R
-import com.junianto.posedc.menu.MenuActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -26,15 +28,16 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
         val btnRePrintReceipt = findViewById<Button>(R.id.btn_re_print_receipt)
 
         successMessageTextView.text = getString(R.string.payment_successful)
-        val formattedAmount = NumberFormat.getNumberInstance(Locale("en", "ID")).format(totalAmount)
+        val decimalFormatSymbols = DecimalFormatSymbols()
+        decimalFormatSymbols.groupingSeparator = '.'
+        val decimalFormat = DecimalFormat("#,###.###", decimalFormatSymbols)
+        decimalFormat.maximumFractionDigits = 0
+        val formattedAmount = decimalFormat.format(totalAmount)
         successDescriptionTextView.text = "Hooray! Your payment of Rp. $formattedAmount is successful"
 
         btnRePrintReceipt.setOnClickListener {
-            // TODO: Implement the desired action when the button is clicked
-        }
-
-        btnRePrintReceipt.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
         }

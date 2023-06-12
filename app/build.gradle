@@ -19,16 +19,26 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def appName = variant.name.capitalize()
+            def newApkName = "POS_EDC_${variant.buildType.name}_${variant.versionName}.apk"
+            outputFileName = newApkName
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "POS EDC Debug"
         }
         release {
             minifyEnabled false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "POS EDC"
         }
     }
     compileOptions {

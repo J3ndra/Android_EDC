@@ -10,12 +10,15 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import com.junianto.posedc.MainActivity
 import com.junianto.posedc.R
 import com.junianto.posedc.database.AppDatabase
 import com.junianto.posedc.database.model.Transaction
 import com.junianto.posedc.database.repository.TransactionRepository
 import com.junianto.posedc.menu.sale.viewmodel.SaleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -43,6 +46,7 @@ class SaleActivity : AppCompatActivity() {
         val btn9 = findViewById<Button>(R.id.btn_9)
         val btn0 = findViewById<Button>(R.id.btn_0)
         val btn000 = findViewById<Button>(R.id.btn_000)
+        val btnStop = findViewById<Button>(R.id.btn_stop)
         val btnClear = findViewById<Button>(R.id.btn_clear)
         val btnOk = findViewById<Button>(R.id.btn_ok)
 
@@ -90,29 +94,22 @@ class SaleActivity : AppCompatActivity() {
             updateAmount("000")
         }
 
+        btnStop.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
+
         btnClear.setOnClickListener {
             clearAmount()
         }
 
         btnOk.setOnClickListener {
-            val amountString = amountEt.text.toString().substring(4)
+            val amountString = amountEt.text.toString().substring(4).replace(".", "")
             val amount = amountString.toInt()
 
-            // Get the current date and time
-            val currentDateTime = getCurrentDateTime()
-
-            // Create a new Transaction object
-            val transaction = Transaction(
-                id = 0,  // Auto-generated ID
-                price = amount,
-                transactionDate = currentDateTime
-            )
-
-            // Save the transaction to the database
-            viewModel.saveTransactionAndNavigate(transaction)
-
-            // Redirect to PaymentSuccessfulActivity with the total amount
-            val intent = Intent(this, PaymentSuccessfulActivity::class.java)
+            val intent = Intent(this, SaleEnterPinActivity::class.java)
             intent.putExtra("totalAmount", amount)
             startActivity(intent)
         }
@@ -120,20 +117,45 @@ class SaleActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun updateAmount(digit: String) {
-        val currentAmount = amountEt.text.toString().substring(4)
+        val currentAmount = amountEt.text.toString().substring(4).replace(".", "").replace(",", "")
         val newAmount = if (currentAmount == "0") digit else currentAmount + digit
-        amountEt.text = "Rp. $newAmount"
+
+        val formatter = DecimalFormat("#,###")
+        val newAmountFormatted = formatter.format(newAmount.toInt()).replace(",", ".")
+        amountEt.text = "Rp. $newAmountFormatted"
     }
 
     @SuppressLint("SetTextI18n")
     private fun clearAmount() {
-        amountEt.text = "Rp. 0"
+        val currentAmount = amountEt.text.toString().substring(4).replace(".", "").replace(",", "")
+        if (currentAmount.isNotEmpty()) {
+            val newAmount = currentAmount.substring(0, currentAmount.length - 1)
+            if (newAmount.isNotEmpty()) {
+                val formattedAmount = formatAmount(newAmount)
+                amountEt.text = formattedAmount
+            } else {
+                amountEt.text = "Rp. 0"
+            }
+        } else {
+            amountEt.text = "Rp. 0"
+        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getCurrentDateTime(): String {
-        val currentDateTime = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        return currentDateTime.format(formatter)
+
+    private fun formatAmount(amount: String): String {
+        val amountWithoutSeparator = amount.replace(".", "").replace(",", "")
+        val decimalFormatSymbols = DecimalFormatSymbols()
+        decimalFormatSymbols.groupingSeparator = '.'
+        val decimalFormat = DecimalFormat("#,###", decimalFormatSymbols)
+        val formattedAmount = decimalFormat.format(amountWithoutSeparator.toLong())
+        return "Rp. $formattedAmount"
     }
+
+
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun getCurrentDateTime(): String {
+//        val currentDateTime = LocalDateTime.now()
+//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+//        return currentDateTime.format(formatter)
+//    }
 }

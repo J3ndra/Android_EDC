@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background with white color and green stroke -->
+    <item>
+        <shape>
+            <solid android:color="#FFFFFF" /> <!-- Set the desired white color for the background -->
+            <stroke
+                android:color="#00FF00" android:width="2dp" /> <!-- Set the desired width for the stroke in dp -->
+            <corners android:radius="8dp" /> <!-- Set a large value for radius to create a circle -->
+        </shape>
+    </item>
+    <!-- Green dot in the center -->
+    <item
+        android:gravity="center">
+        <shape>
+            <solid android:color="#00FF00" /> <!-- Set the desired green color for the dot -->
+            <size android:width="12dp" android:height="12dp" /> <!-- Set the desired size for the dot in dp -->
+            <corners android:radius="100dp" /> <!-- Set a large value for radius to create a circle -->
+        </shape>
+    </item>
+</layer-list>
