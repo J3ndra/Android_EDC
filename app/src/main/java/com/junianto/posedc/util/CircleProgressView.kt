@@ -18,10 +18,17 @@ import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CircleProgressView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
+    @Inject
+    lateinit var nfcTagReader: NfcTagReader
 
     private val progressPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
@@ -96,20 +103,26 @@ class CircleProgressView @JvmOverloads constructor(
     }
 
     fun handleNfcIntent(intent: Intent) {
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
-            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-            val ndef = Ndef.get(tag)
+        if (NfcAdapter.ACTION_TAG_DISCOVERED == intent.action) {
+            val tag: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+            if (tag != null) {
+                nfcTagReader.readNfcTag(tag)
 
-            ndef?.connect()
-            val ndefMessage = ndef?.ndefMessage
-            if (ndefMessage != null) {
-                // NFC tag tapped successfully
+                // Show toast with tag information
+                val tagInfo = "Tag ID: ${bytesToHexString(tag.id)}"
+                Toast.makeText(context, tagInfo, Toast.LENGTH_LONG).show()
+
+                // Send to listener and make it as true. And then, the timer will be stopped
                 listener?.onTimerFinished(true)
-            } else {
-                // NFC tag tapped but not recognized
-                Toast.makeText(context, "NFC tag not recognized", Toast.LENGTH_SHORT).show()
             }
-            ndef?.close()
         }
+    }
+
+    private fun bytesToHexString(bytes: ByteArray): String {
+        val stringBuilder = StringBuilder()
+        for (byte in bytes) {
+            stringBuilder.append(String.format("%02x", byte))
+        }
+        return stringBuilder.toString()
     }
 }

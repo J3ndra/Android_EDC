@@ -20,6 +20,16 @@
         android:theme="@style/Theme.POSEDC"
         tools:targetApi="31">
         <activity
+            android:name=".menu.sale.SaleTapCardActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/tech_list" />
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED"/>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".menu.settlements.SettlementsPinActivity"
             android:exported="false" />
         <activity
@@ -31,31 +41,6 @@
         <activity
             android:name=".menu.sale.PaymentSuccessfulActivity"
             android:exported="false" />
-        <activity
-            android:name=".util.TapCardActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
-                <data android:scheme="*" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.nfc.action.TAG_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/tech_list" />
-        </activity>
         <activity
             android:name=".menu.sale.SaleActivity"
             android:exported="false" />
