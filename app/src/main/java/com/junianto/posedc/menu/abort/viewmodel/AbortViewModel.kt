@@ -21,4 +21,10 @@ class AbortViewModel @Inject constructor(private val transactionRepository: Tran
             _transactionDetail.value = transaction
         }
     }
+
+    fun deleteTransaction(transactionId: Int) {
+        viewModelScope.launch {
+            transactionRepository.deleteTransactionById(transactionId)
+        }
+    }
 }

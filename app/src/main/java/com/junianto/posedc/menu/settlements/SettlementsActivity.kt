@@ -110,8 +110,10 @@ class SettlementsActivity : AppCompatActivity() {
         val totalAmountTextView = findViewById<TextView>(R.id.tv_total)
         val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
         currencyFormat.maximumFractionDigits = 0
-        val formattedTotalAmount = currencyFormat.format(totalAmount)
-        totalAmountTextView.text = formattedTotalAmount
+        val formattedTotalAmount = currencyFormat.format(totalAmount).substring(2)
+        val finalFormattedTotalAmount = "Rp. $formattedTotalAmount"
+
+        totalAmountTextView.text = finalFormattedTotalAmount
     }
 
 }

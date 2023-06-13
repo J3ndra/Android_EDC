@@ -74,4 +74,25 @@
     <string name="enter_trace_id">Enter Trace ID</string>
     <string name="home_icon">Home Icon</string>
     <string name="trace_id">00001</string>
+    <string name="void_detail">Void Detail</string>
+    <string name="text_void">Void</string>
+    <string name="edc_no_493_24_type_ib1">EDC NO.493.24 TYPE.IB1</string>
+    <string name="edc_date">23-11-2022</string>
+    <string name="terminal_id">TERMINAL ID : 000000</string>
+    <string name="merchant_id">MERCHANT ID : 00000000000</string>
+    <string name="date_2023_06_12">DATE : 2023-06-12</string>
+    <string name="time_10_16">TIME : 10:16</string>
+    <string name="trace_id_1">TRACE ID : 1</string>
+    <string name="batch_00000">BATCH# : 00000</string>
+    <string name="card_no_0000000">CARD NO : 0000000</string>
+    <string name="void_sale">VOID SALE</string>
+    <string name="amount">AMOUNT</string>
+    <string name="abort_acknowledge">CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND SERVICES AND AGRESS TO PAY THE TOTAL SHOWN HERE</string>
+    <string name="customer_copy">**CUSTOMER COPY**</string>
+    <string name="trace_id_placeholder">TRACE ID: %d</string>
+    <string name="date_placeholder">DATE : %s</string>
+    <string name="time_placeholder">TIME : %s</string>
+    <string name="your_void_of_1_was_successful">Your void of #1 was successful.</string>
+    <string name="void_successful">Void Successful</string>
+    <string name="void_successful_message">Your void of #%1$d was successful.</string>
 </resources>

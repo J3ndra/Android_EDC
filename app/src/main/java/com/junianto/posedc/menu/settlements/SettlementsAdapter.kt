@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.junianto.posedc.R
 import com.junianto.posedc.database.model.Transaction
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -42,8 +43,13 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
         @SuppressLint("SetTextI18n")
         fun bind(transaction: Transaction) {
             transactionIdTextView.text = "TRACE NO : ${transaction.id}"
+
             val formattedAmount = NumberFormat.getNumberInstance(Locale("en", "ID")).format(transaction.price)
-            priceTextView.text = "Rp. $formattedAmount"
+            val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
+            val formattedAmountWithDots = formattedAmount.replace(decimalSeparator.toString(), ".")
+            priceTextView.text = "Rp. $formattedAmountWithDots"
+
+
             transactionDateTextView.text = transaction.transactionDate
         }
     }

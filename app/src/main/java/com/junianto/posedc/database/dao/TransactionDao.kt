@@ -22,6 +22,6 @@ interface TransactionDao {
     @Update
     suspend fun updateTransaction(transaction: Transaction)
 
-    @Delete
-    suspend fun deleteTransaction(transaction: Transaction)
+    @Query("DELETE FROM transactions WHERE id = :transactionId")
+    suspend fun deleteTransactionById(transactionId: Int)
 }

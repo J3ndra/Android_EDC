@@ -20,6 +20,9 @@
         android:theme="@style/Theme.POSEDC"
         tools:targetApi="31">
         <activity
+            android:name=".menu.abort.VoidSuccessfulActivity"
+            android:exported="false" />
+        <activity
             android:name=".menu.abort.AbortDetailActivity"
             android:exported="false" />
         <activity
