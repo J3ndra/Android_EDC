@@ -12,7 +12,7 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.Locale
 
-class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
+class SettlementsAdapter : RecyclerView.Adapter<SettlementsAdapter.TransactionViewHolder>() {
     private var transactions: List<Transaction> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
@@ -48,7 +48,6 @@ class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.TransactionVi
             val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
             val formattedAmountWithDots = formattedAmount.replace(decimalSeparator.toString(), ".")
             priceTextView.text = "Rp. $formattedAmountWithDots"
-
 
             transactionDateTextView.text = transaction.transactionDate
         }

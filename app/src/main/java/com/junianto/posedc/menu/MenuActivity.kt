@@ -28,6 +28,7 @@ class MenuActivity : AppCompatActivity() {
             MenuButton(R.drawable.sale_icon, "SALE", "Card Transaction"),
             MenuButton(R.drawable.settlement_icon, "SETTLEMENTS", "Sync of Transactions"),
             MenuButton(R.drawable.abort_icon, "VOID", "Abort the Transaction"),
+            MenuButton(R.drawable.reprint_icon, "REPRINT", "Reprint of Receipt"),
             // Add more button items as needed
         )
 

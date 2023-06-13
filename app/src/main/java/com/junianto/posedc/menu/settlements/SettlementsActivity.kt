@@ -19,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Currency
 import java.util.Date
 import java.util.Locale
 
@@ -27,7 +26,7 @@ import java.util.Locale
 class SettlementsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: TransactionAdapter
+    private lateinit var adapter: SettlementsAdapter
     private val viewModel: SettlementsViewModel by viewModels()
 
     private var transactions: List<Transaction> = emptyList()
@@ -38,7 +37,7 @@ class SettlementsActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.transaction_rv)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = TransactionAdapter()
+        adapter = SettlementsAdapter()
         recyclerView.adapter = adapter
 
         viewModel.allTransactions.observe(this) { transactionList ->
@@ -52,8 +51,7 @@ class SettlementsActivity : AppCompatActivity() {
         val filterSpinner = findViewById<Spinner>(R.id.filter_spinner)
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedFilter = parent?.getItemAtPosition(position).toString()
-                val filterDays = when (selectedFilter) {
+                val filterDays = when (parent?.getItemAtPosition(position).toString()) {
                     "1 Day" -> 1
                     "7 Days" -> 7
                     "30 Days" -> 30
