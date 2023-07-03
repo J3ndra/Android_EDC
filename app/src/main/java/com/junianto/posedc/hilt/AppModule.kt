@@ -1,7 +1,9 @@
 package com.junianto.posedc.hilt
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import com.junianto.posedc.util.BluetoothPermissionHelper
 import com.junianto.posedc.util.NfcTagReader
 import com.junianto.posedc.util.NfcTagReaderImpl
 import dagger.Module
