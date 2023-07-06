@@ -13,8 +13,8 @@ class TransactionRepository @Inject constructor(private val transactionDao: Tran
         return transactionDao.getTransactionById(transactionId)
     }
 
-    suspend fun insertTransaction(transaction: Transaction) {
-        transactionDao.insertTransaction(transaction)
+    suspend fun insertTransaction(transaction: Transaction): Long {
+        return transactionDao.insertTransaction(transaction)
     }
 
     suspend fun updateTransaction(transaction: Transaction) {

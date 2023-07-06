@@ -26,6 +26,8 @@ class CircleProgressView @JvmOverloads constructor(
 
     private var timer: CountDownTimer? = null
 
+    private var tagId: String? = null
+
     private val progressPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
         style = Paint.Style.STROKE
@@ -108,10 +110,16 @@ class CircleProgressView @JvmOverloads constructor(
                 val tagInfo = "Tag ID: ${bytesToHexString(tag.id)}"
                 Toast.makeText(context, tagInfo, Toast.LENGTH_LONG).show()
 
+                tagId = bytesToHexString(tag.id)
+
                 // Send to listener and make it as true. And then, the timer will be stopped
                 listener?.onTimerFinished(true)
             }
         }
+    }
+
+    fun getTagId(): String? {
+        return tagId
     }
 
     private fun bytesToHexString(bytes: ByteArray): String {

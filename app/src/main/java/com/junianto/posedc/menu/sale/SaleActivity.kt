@@ -17,6 +17,7 @@ import com.junianto.posedc.database.model.Transaction
 import com.junianto.posedc.database.repository.TransactionRepository
 import com.junianto.posedc.menu.sale.viewmodel.SaleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.LocalDateTime
@@ -32,6 +33,8 @@ class SaleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sale)
+
+        val cardId = intent.getStringExtra("tagId")
 
         amountEt = findViewById(R.id.amount_et)
 
@@ -108,9 +111,11 @@ class SaleActivity : AppCompatActivity() {
         btnOk.setOnClickListener {
             val amountString = amountEt.text.toString().substring(4).replace(".", "")
             val amount = amountString.toInt()
+            Timber.i("amount_total: $amount")
 
             val intent = Intent(this, SaleEnterPinActivity::class.java)
-            intent.putExtra("totalAmount", amount)
+            intent.putExtra("amount", amount)
+            intent.putExtra("tagId", cardId)
             startActivity(intent)
         }
     }

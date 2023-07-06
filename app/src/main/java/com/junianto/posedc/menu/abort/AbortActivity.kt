@@ -90,10 +90,12 @@ class AbortActivity : AppCompatActivity() {
 
         viewModel.transactionDetail.observe(this, Observer { transaction ->
             if (transaction != null) {
+                Timber.d("Transaction: $transaction")
                 val intent = Intent(this, AbortDetailActivity::class.java)
                 intent.putExtra("transactionId", transaction.id)
                 intent.putExtra("transactionAmount", transaction.price)
                 intent.putExtra("transactionDate", transaction.transactionDate)
+                intent.putExtra("transactionCardId", transaction.cardId)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Transaction not found", Toast.LENGTH_SHORT).show()

@@ -31,10 +31,13 @@ class SaleTapCardActivity : AppCompatActivity() {
         circleProgressView = findViewById(R.id.circle_progress_view)
         circleProgressView.setListener(object : CircleProgressView.Listener {
             override fun onTimerFinished(success: Boolean) {
+                val tagId = circleProgressView.getTagId()
+
                 if (success) {
                     Toast.makeText(this@SaleTapCardActivity, "Success", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(this@SaleTapCardActivity, SaleActivity::class.java)
+                    intent.putExtra("tagId", tagId)
                     startActivity(intent)
                     finish()
                 } else {

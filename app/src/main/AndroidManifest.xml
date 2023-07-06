@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
+    <uses-permission android:name="android.permission.BIND_PRINT_SERVICE" />
+
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
@@ -25,11 +27,8 @@
         android:theme="@style/Theme.POSEDC"
         tools:targetApi="31">
         <service
-            android:name="com.iposprinter.iposprinterservice.IPosPrinterService"
-            android:enabled="true"
-            android:exported="false"
-            tools:ignore="Instantiatable"
-            android:permission="TODO" />
+            android:name="com.junianto.posedc.service.PrinterServiceConnection"
+            android:exported="false" />
         <activity
             android:name=".menu.reprint.ReprintActivity"
             android:exported="false" />

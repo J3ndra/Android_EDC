@@ -13,8 +13,13 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.Locale
 
+interface ReprintButtonClickListener {
+    fun onReprintButtonClick(transaction: Transaction)
+}
+
 class ReprintAdapter : RecyclerView.Adapter<ReprintAdapter.ReprintViewHolder>() {
     private var transactions: List<Transaction> = emptyList()
+    private var reprintButtonClickListener: ReprintButtonClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReprintViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction_reprint, parent, false)
@@ -54,8 +59,12 @@ class ReprintAdapter : RecyclerView.Adapter<ReprintAdapter.ReprintViewHolder>() 
             transactionDateTextView.text = transaction.transactionDate
 
             reprintButton.setOnClickListener {
-                Toast.makeText(itemView.context, "Reprint transaction with id ${transaction.id}", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(itemView.context, "Reprint transaction with id ${transaction.id}", Toast.LENGTH_SHORT).show()
+                reprintButtonClickListener?.onReprintButtonClick(transaction)
             }
         }
+    }
+    fun reprintButtonClickListener(reprintButtonClickListener: ReprintButtonClickListener) {
+        this.reprintButtonClickListener = reprintButtonClickListener
     }
 }
