@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
-    <uses-permission android:name="android.permission.BIND_PRINT_SERVICE" />
-
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
@@ -20,15 +18,12 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.POSEDC"
         tools:targetApi="31">
-        <service
-            android:name="com.junianto.posedc.service.PrinterServiceConnection"
-            android:exported="false" />
         <activity
             android:name=".menu.reprint.ReprintActivity"
             android:exported="false" />

@@ -425,6 +425,7 @@ class SaleEnterPinActivity : AppCompatActivity() {
                     price = totalAmount,
                     transactionDate = currentDateTime,
                     cardId = cardId!!,
+                    status = true,
                 )
 
                 viewModel.saveTransactionAndNavigate(transaction) { insertedId ->
@@ -433,6 +434,8 @@ class SaleEnterPinActivity : AppCompatActivity() {
                     i.putExtra("totalAmount", totalAmount)
                     i.putExtra("cardId", cardId)
                     i.putExtra("traceId", insertedId.toInt())
+                    i.putExtra("transactionStatus", true)
+                    i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(i)
                     finish()
                 }
@@ -460,7 +463,7 @@ class SaleEnterPinActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -489,14 +492,14 @@ class SaleEnterPinActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 // DATE
@@ -520,49 +523,49 @@ class SaleEnterPinActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "DATE: $currentDate",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TIME: $currentTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REFF NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "APRV NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TRACE NO: $id",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)

@@ -10,5 +10,6 @@ data class Transaction(
     val price: Int,
     val transactionDate: String,
     val cardId: String,
+    val status: Boolean,
 )
 

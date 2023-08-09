@@ -198,6 +198,7 @@ class AbortDetailActivity : AppCompatActivity() {
         val transactionId = intent.getIntExtra("transactionId", 0)
         val transactionAmount = intent.getIntExtra("transactionAmount", 0)
         val transactionCardId = intent.getStringExtra("transactionCardId")
+        val transactionStatus = intent.getBooleanExtra("transactionStatus", false)
 
         handler = HandlerUtils.MyHandler(iHandlerIntent)
 
@@ -274,16 +275,20 @@ class AbortDetailActivity : AppCompatActivity() {
         val formattedText = formattedAmount.replace("Rp", "-Rp.")
         amountTextView.text = formattedText
 
+        val tvStatusView = findViewById<TextView>(R.id.tv_status)
+        val paymentStatus = if (transactionStatus) "STATUS : PAID" else "STATUS : SETTLED"
+        tvStatusView.text = paymentStatus
+
         val btnVoid = findViewById<Button>(R.id.btn_void)
 
         btnVoid.setOnClickListener {
             if (transactionCardId != null) {
-                showConfirmationDialog(transactionId, transactionAmount, transactionCardId)
+                showConfirmationDialog(transactionId, transactionAmount, transactionCardId, transactionStatus)
             }
         }
     }
 
-    private fun showConfirmationDialog(transactionId: Int, transactionAmount: Int, transactionCardId: String) {
+    private fun showConfirmationDialog(transactionId: Int, transactionAmount: Int, transactionCardId: String, transactionStatus: Boolean) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setMessage("Are you sure to void this transaction? This action cannot be undone.")
         dialogBuilder.setPositiveButton("Yes") { dialog: DialogInterface, _: Int ->
@@ -296,6 +301,7 @@ class AbortDetailActivity : AppCompatActivity() {
             intent.putExtra("transactionId", transactionId)
             intent.putExtra("transactionAmount", transactionAmount)
             intent.putExtra("transactionCardId", transactionCardId)
+            intent.putExtra("transactionStatus", transactionStatus)
             startActivity(intent)
             finish()
             // Handle void action here
@@ -324,7 +330,7 @@ class AbortDetailActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -353,14 +359,14 @@ class AbortDetailActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 // DATE
@@ -384,49 +390,49 @@ class AbortDetailActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "DATE: $currentDate",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TIME: $currentTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REFF NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "APRV NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TRACE NO: $id",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)

@@ -96,6 +96,7 @@ class AbortActivity : AppCompatActivity() {
                 intent.putExtra("transactionAmount", transaction.price)
                 intent.putExtra("transactionDate", transaction.transactionDate)
                 intent.putExtra("transactionCardId", transaction.cardId)
+                intent.putExtra("transactionStatus", transaction.status)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Transaction not found", Toast.LENGTH_SHORT).show()

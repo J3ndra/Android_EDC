@@ -193,8 +193,9 @@ class VoidSuccessfulActivity : AppCompatActivity() {
         val transactionId = intent.getIntExtra("transactionId", 0)
         val transactionAmount = intent.getIntExtra("transactionAmount", 0)
         val transactionCardId = intent.getStringExtra("transactionCardId")
+        val transactionStatus = intent.getBooleanExtra("transactionStatus", false)
 
-        Timber.d("RECEIVED TRANSACTION ID: $transactionId, AMOUNT: $transactionAmount, CARD ID: $transactionCardId")
+        Timber.d("RECEIVED TRANSACTION ID: $transactionId, AMOUNT: $transactionAmount, CARD ID: $transactionCardId, TRANSACTION STATUS: $transactionStatus")
 
         handler = HandlerUtils.MyHandler(iHandlerIntent)
 
@@ -240,7 +241,7 @@ class VoidSuccessfulActivity : AppCompatActivity() {
 
         val btnReprintReceipt = findViewById<Button>(R.id.btn_re_print_receipt)
         btnReprintReceipt.setOnClickListener {
-            printReceipt(transactionAmount, transactionId, transactionCardId)
+            printReceipt(transactionAmount, transactionId, transactionCardId, transactionStatus)
             val i = Intent(this, MainActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(i)
@@ -248,7 +249,7 @@ class VoidSuccessfulActivity : AppCompatActivity() {
         }
     }
 
-    private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?) {
+    private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?, transactionStatus: Boolean?) {
         ThreadPoolManager.getInstance().executeTask {
             val mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.tutwuri)
             try {
@@ -265,7 +266,7 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -294,14 +295,14 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 // DATE
@@ -325,49 +326,57 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "DATE: $currentDate",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TIME: $currentTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REFF NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "APRV NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TRACE NO: $traceId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
                     "ST",
-                    16,
+                    24,
+                    callback
+                )
+                mIPosPrinterService!!.printBlankLines(1, 8, callback)
+                val paymentStatus = if (transactionStatus == true) "PAID" else "SETTLED"
+                mIPosPrinterService!!.printSpecifiedTypeText(
+                    "STATUS : $paymentStatus",
+                    "ST",
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)

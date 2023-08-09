@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">POS EDC</string>
+    <string name="app_name">EDC SMK</string>
     <string name="tut_wuri_handayani_logo">Tut Wuri Handayani Logo</string>
     <string name="sekolah_menengah_kejuruan">Sekolah Menengah Kejuruan</string>
     <string name="bisnis_dan_manajemen">Bisnis dan Manajemen</string>
@@ -141,4 +141,5 @@
     <string name="unknown_error">unknown status</string>
     <string name="switch_mode">Switch Mode</string>
     <string name="exit">Exit</string>
+    <string name="status_paid">STATUS : PAID</string>
 </resources>

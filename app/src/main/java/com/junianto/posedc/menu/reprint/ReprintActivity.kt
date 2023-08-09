@@ -270,7 +270,7 @@ class ReprintActivity : AppCompatActivity(), ReprintButtonClickListener {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -299,14 +299,14 @@ class ReprintActivity : AppCompatActivity(), ReprintButtonClickListener {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 // DATE
@@ -330,49 +330,49 @@ class ReprintActivity : AppCompatActivity(), ReprintButtonClickListener {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "DATE: $currentDate",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TIME: $currentTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REFF NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "APRV NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TRACE NO: $traceId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)

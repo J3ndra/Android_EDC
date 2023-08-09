@@ -197,6 +197,7 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
         val totalAmount = intent.getIntExtra("totalAmount", 0)
         val cardId = intent.getStringExtra("cardId")
         val traceId = intent.getIntExtra("traceId", 0)
+        val transactionStatus = intent.getBooleanExtra("transactionStatus", false)
 
         handler = HandlerUtils.MyHandler(iHandlerIntent)
 
@@ -249,7 +250,7 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
         successDescriptionTextView.text = "Hooray! Your payment of Rp. $formattedAmount is successful"
 
         btnRePrintReceipt.setOnClickListener {
-            printReceipt(totalAmount, traceId, cardId)
+            printReceipt(totalAmount, traceId, cardId, transactionStatus)
 
             val i = Intent(this, MainActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -258,7 +259,7 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
         }
     }
 
-    private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?) {
+    private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?, transactionStatus: Boolean?) {
         ThreadPoolManager.getInstance().executeTask {
             val mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.tutwuri)
             try {
@@ -371,6 +372,14 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
                     "BATCH NO: 000000",
                     "ST",
                     16,
+                    callback
+                )
+                mIPosPrinterService!!.printBlankLines(1, 8, callback)
+                val paymentStatus = if (transactionStatus == true) "PAID" else "SETTLED"
+                mIPosPrinterService!!.printSpecifiedTypeText(
+                    "STATUS : $paymentStatus",
+                    "ST",
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)

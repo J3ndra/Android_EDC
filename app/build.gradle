@@ -32,13 +32,13 @@ android {
             minifyEnabled false
             debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            resValue "string", "app_name", "POS EDC Debug"
+            resValue "string", "app_name", "EDC SMK"
         }
         release {
             minifyEnabled false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            resValue "string", "app_name", "POS EDC"
+            resValue "string", "app_name", "EDC SMK"
         }
     }
     compileOptions {
@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.46.1'
     kapt 'com.google.dagger:hilt-compiler:2.46.1'
 
-    // Room Database
+    // Room Databaseimplementation 'com.github.androidmads:QRGenerator:1.0.1'
     implementation 'androidx.room:room-ktx:2.5.1'
     kapt 'androidx.room:room-compiler:2.5.1'
 
@@ -90,6 +90,9 @@ dependencies {
 
     // Bluetooth printer
     implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.3.0'
+
+    // QR Generator
+    implementation 'com.github.androidmads:QRGenerator:1.0.1'
 }
 
 kapt {

@@ -342,7 +342,7 @@ class SettlementsActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -371,14 +371,14 @@ class SettlementsActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
@@ -394,7 +394,7 @@ class SettlementsActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REPORT DATE : $currentDateTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 32, callback)
@@ -427,7 +427,7 @@ class SettlementsActivity : AppCompatActivity() {
                     mIPosPrinterService!!.printSpecifiedTypeText(
                         "DATE TIME : ${transaction.transactionDate}",
                         "ST",
-                        16,
+                        24,
                         callback
                     )
                     mIPosPrinterService!!.printBlankLines(1, 8, callback)
@@ -439,7 +439,7 @@ class SettlementsActivity : AppCompatActivity() {
                     mIPosPrinterService!!.printSpecifiedTypeText(
                         "AMOUNT : $formattedAmount",
                         "ST",
-                        16,
+                        24,
                         callback
                     )
                     mIPosPrinterService!!.printBlankLines(1, 8, callback)
