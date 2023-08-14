@@ -250,10 +250,10 @@ class ReprintActivity : AppCompatActivity(), ReprintButtonClickListener {
     }
 
     override fun onReprintButtonClick(transaction: Transaction) {
-        printReceipt(transaction.price, transaction.id, transaction.cardId)
+        printReceipt(transaction.price, transaction.id, transaction.cardId, transaction.status)
     }
 
-    private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?) {
+    private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?, transactionStatus: Boolean) {
         ThreadPoolManager.getInstance().executeTask {
             val mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.tutwuri)
             try {
@@ -369,6 +369,14 @@ class ReprintActivity : AppCompatActivity(), ReprintButtonClickListener {
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
+                val paymentStatus = if (transactionStatus == true) "PAID" else "SETTLED"
+                mIPosPrinterService!!.printSpecifiedTypeText(
+                    "STATUS : $paymentStatus",
+                    "ST",
+                    24,
+                    callback
+                )
+                mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
@@ -401,11 +409,11 @@ class ReprintActivity : AppCompatActivity(), ReprintButtonClickListener {
                     48,
                     callback
                 )
-                mIPosPrinterService!!.printBlankLines(1, 64, callback)
+                mIPosPrinterService!!.printBlankLines(1, 32, callback)
                 mIPosPrinterService!!.setPrinterPrintAlignment(1, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     """
-                    -------------------------------------
+                    -----------------------
                     """.trimIndent(), "ST", 32, callback
                 )
                 mIPosPrinterService!!.printSpecifiedTypeText(

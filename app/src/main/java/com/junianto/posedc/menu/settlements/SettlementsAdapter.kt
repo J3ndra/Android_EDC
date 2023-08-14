@@ -39,10 +39,14 @@ class SettlementsAdapter : RecyclerView.Adapter<SettlementsAdapter.TransactionVi
         private val transactionIdTextView: TextView = itemView.findViewById(R.id.transactionIdTextView)
         private val priceTextView: TextView = itemView.findViewById(R.id.priceTextView)
         private val transactionDateTextView: TextView = itemView.findViewById(R.id.transactionDateTextView)
+        private val transactionStatusTextView: TextView = itemView.findViewById(R.id.transactionStatusTextView)
 
         @SuppressLint("SetTextI18n")
         fun bind(transaction: Transaction) {
+            val statusText = if (transaction.status) "PAID" else "SETTLED"
+
             transactionIdTextView.text = "TRACE NO : ${transaction.id}"
+            transactionStatusTextView.text = "STATUS : $statusText"
 
             val formattedAmount = NumberFormat.getNumberInstance(Locale("en", "ID")).format(transaction.price)
             val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator

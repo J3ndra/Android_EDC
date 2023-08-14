@@ -1,5 +1,6 @@
 package com.junianto.posedc.menu
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.junianto.posedc.R
 import com.junianto.posedc.menu.abort.AbortActivity
 import com.junianto.posedc.menu.abort.AbortEnterPinActivity
+import com.junianto.posedc.menu.qris.QrisActivity
 import com.junianto.posedc.menu.reprint.ReprintActivity
 import com.junianto.posedc.menu.sale.SaleActivity
 import com.junianto.posedc.menu.sale.SaleTapCardActivity
 import com.junianto.posedc.menu.settlements.SettlementsPinActivity
+import timber.log.Timber
 
 class MenuAdapter(private val buttons: List<MenuButton>, private val context: Context) : RecyclerView.Adapter<MenuAdapter.ButtonViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ButtonViewHolder {
@@ -47,6 +50,16 @@ class MenuAdapter(private val buttons: List<MenuButton>, private val context: Co
                     1 -> context.startActivity(Intent(context, SettlementsPinActivity::class.java))
                     2 -> context.startActivity(Intent(context, AbortEnterPinActivity::class.java))
                     3 -> context.startActivity(Intent(context, ReprintActivity::class.java))
+                    4 -> context.startActivity(Intent(context, QrisActivity::class.java))
+                    // Create aleart dialog
+                    7 -> AlertDialog.Builder(context)
+                        .setTitle("About")
+                        .setMessage("POS EDC v1.0.0 - Created by Junianto")
+                        .setPositiveButton("OK") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                    else -> Timber.d("Unknown button clicked")
                 }
             }
         }

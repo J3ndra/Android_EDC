@@ -1,5 +1,6 @@
-package com.junianto.posedc.menu.abort
+package com.junianto.posedc.menu.qris
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
@@ -13,25 +14,48 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.Message
 import android.os.RemoteException
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
 import com.iposprinter.iposprinterservice.IPosPrinterCallback
 import com.iposprinter.iposprinterservice.IPosPrinterService
 import com.junianto.posedc.MainActivity
 import com.junianto.posedc.R
+import com.junianto.posedc.databinding.ActivityQrisBinding
+import com.junianto.posedc.menu.sale.PaymentSuccessfulActivity
 import com.junianto.posedc.util.HandlerUtils
 import com.junianto.posedc.util.ThreadPoolManager
+import com.junianto.posedc.util.cameraPermissionRequest
+import com.junianto.posedc.util.isPermissionGranted
+import com.junianto.posedc.util.openPermissionSetting
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.Random
+import java.util.concurrent.Executors
 
 @AndroidEntryPoint
-class VoidSuccessfulActivity : AppCompatActivity() {
+class QrisActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityQrisBinding
 
     private val TAG = "IPosPrinterTestDemo"
 
@@ -104,28 +128,28 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                     }
                 }
                 MSG_IS_BUSY -> {
-                    Toast.makeText(this@VoidSuccessfulActivity, R.string.printer_is_working, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@QrisActivity, R.string.printer_is_working, Toast.LENGTH_SHORT).show()
                 }
                 MSG_PAPER_LESS -> {
                     loopPrintFlag = DEFAULT_LOOP_PRINT
-                    Toast.makeText(this@VoidSuccessfulActivity, R.string.out_of_paper, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@QrisActivity, R.string.out_of_paper, Toast.LENGTH_SHORT).show()
                 }
                 MSG_PAPER_EXISTS -> {
-                    Toast.makeText(this@VoidSuccessfulActivity, R.string.exists_paper, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@QrisActivity, R.string.exists_paper, Toast.LENGTH_SHORT).show()
                 }
                 MSG_THP_HIGH_TEMP -> {
-                    Toast.makeText(this@VoidSuccessfulActivity, R.string.printer_high_temp_alarm, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@QrisActivity, R.string.printer_high_temp_alarm, Toast.LENGTH_SHORT).show()
                 }
                 MSG_MOTOR_HIGH_TEMP -> {
                     loopPrintFlag = DEFAULT_LOOP_PRINT
-                    Toast.makeText(this@VoidSuccessfulActivity, R.string.motor_high_temp_alarm, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@QrisActivity, R.string.motor_high_temp_alarm, Toast.LENGTH_SHORT).show()
                     handler?.sendEmptyMessageDelayed(MSG_MOTOR_HIGH_TEMP_INIT_PRINTER, 180000) //马达高温报警，等待3分钟后复位打印机
                 }
                 MSG_MOTOR_HIGH_TEMP_INIT_PRINTER -> {
                     printerInit()
                 }
                 MSG_CURRENT_TASK_PRINT_COMPLETE -> {
-                    Toast.makeText(this@VoidSuccessfulActivity, R.string.printer_current_task_print_complete, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@QrisActivity, R.string.printer_current_task_print_complete, Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     // Default case
@@ -186,16 +210,33 @@ class VoidSuccessfulActivity : AppCompatActivity() {
         }
     }
 
+    private val cameraPermission = android.Manifest.permission.CAMERA
+
+    private val requestCameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            // START SCANNER
+            bindInputAnalyser()
+        } else {
+            cameraPermissionRequest {
+                openPermissionSetting()
+            }
+        }
+    }
+
+    private val viewModel: QrisViewModel by viewModels()
+
+    private lateinit var cameraSelector: CameraSelector
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var processCameraProvider: ProcessCameraProvider
+    private lateinit var cameraPreview: Preview
+    private lateinit var imageAnalysis: ImageAnalysis
+
+    private var shouldProcessFrames = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_void_successful)
-
-        val transactionId = intent.getIntExtra("transactionId", 0)
-        val transactionAmount = intent.getIntExtra("transactionAmount", 0)
-        val transactionCardId = intent.getStringExtra("transactionCardId")
-        val transactionStatus = intent.getBooleanExtra("transactionStatus", false)
-
-        Timber.d("RECEIVED TRANSACTION ID: $transactionId, AMOUNT: $transactionAmount, CARD ID: $transactionCardId, TRANSACTION STATUS: $transactionStatus")
+        binding = ActivityQrisBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         handler = HandlerUtils.MyHandler(iHandlerIntent)
 
@@ -235,18 +276,171 @@ class VoidSuccessfulActivity : AppCompatActivity() {
 
         registerReceiver(IPosPrinterStatusListener, printerStatusFilter)
 
-        val tv7 = findViewById<TextView>(R.id.textView7)
-        val voidSuccessfulMessage = getString(R.string.void_successful_message, transactionId)
-        tv7.text = voidSuccessfulMessage
+        cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
-        val btnReprintReceipt = findViewById<Button>(R.id.btn_re_print_receipt)
-        btnReprintReceipt.setOnClickListener {
-            printReceipt(transactionAmount, transactionId, transactionCardId, transactionStatus)
-            val i = Intent(this, MainActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(i)
-            finish()
+        cameraProviderFuture.addListener({
+            processCameraProvider = cameraProviderFuture.get()
+            bindCameraPreview()
+            requestCameraAndStartScanner()
+        }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun requestCameraAndStartScanner() {
+        if (isPermissionGranted(cameraPermission)) {
+            // START SCANNER
+            bindInputAnalyser()
+        } else {
+            requestCameraPermission()
         }
+    }
+
+    private fun requestCameraPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            when {
+                shouldShowRequestPermissionRationale(cameraPermission) -> {
+                    cameraPermissionRequest {
+                        openPermissionSetting()
+                    }
+                }
+                else -> {
+                    requestCameraPermission.launch(cameraPermission)
+                }
+            }
+        } else {
+            requestCameraPermission.launch(cameraPermission)
+        }
+    }
+
+    private fun bindCameraPreview() {
+        cameraPreview = Preview.Builder()
+            .setTargetRotation(binding.cameraxPreview.display.rotation)
+            .build()
+        cameraPreview.setSurfaceProvider(binding.cameraxPreview.surfaceProvider)
+        processCameraProvider.bindToLifecycle(this, cameraSelector, cameraPreview)
+    }
+
+    private fun bindInputAnalyser() {
+        val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(
+            BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
+                .build()
+        )
+
+        imageAnalysis = ImageAnalysis.Builder()
+            .setTargetRotation(binding.cameraxPreview.display.rotation)
+            .build()
+
+        val cameraExecutor = Executors.newSingleThreadExecutor()
+
+        imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
+            if (shouldProcessFrames) {
+                processImageProxy(barcodeScanner, imageProxy)
+            } else {
+                imageProxy.close()
+            }
+        }
+
+        processCameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis)
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    private fun processImageProxy(
+        barcodeScanner: BarcodeScanner,
+        imageProxy: ImageProxy
+    ) {
+        val inputImage = InputImage.fromMediaImage(imageProxy.image!!, imageProxy.imageInfo.rotationDegrees)
+
+        barcodeScanner.process(inputImage)
+            .addOnSuccessListener {
+                if (it.isNotEmpty()) {
+                    shouldProcessFrames = false
+
+                    lifecycleScope.launch {
+                        val transactionExists = it[0].rawValue?.let { it1 ->
+                            viewModel.checkTransactionExists(
+                                it1.toInt()
+                            )
+                        }
+                        if (transactionExists == true) {
+                            AlertDialog.Builder(this@QrisActivity)
+                                .setTitle("QRIS")
+                                .setMessage("Pesanan dengan Trace ID ${it[0].rawValue} ditemukan, apakah anda menyelesaikan pembayaran?")
+                                .setPositiveButton("YA") { dialog, _ ->
+                                    dialog.dismiss()
+
+                                    // UPDATE THE DATA
+                                    it[0].rawValue?.let { rawValue ->
+                                        lifecycleScope.launch {
+                                            viewModel.updateTransactionStatus(rawValue.toInt())
+                                        }
+                                    }
+
+                                    // GET THE DATA
+                                    it[0].rawValue?.let { it1 -> viewModel.getTransactionById(it1.toInt()) }
+
+                                    // DECLARE THE DATA
+                                    var traceId: Int? = null
+                                    var cardId: String? = null
+                                    var price: Int? = null
+                                    var status: Boolean? = null
+
+                                    // OBSERVE THE DATA
+                                    viewModel.transactionDetail.observe(this@QrisActivity) { transaction ->
+                                        if (transaction != null) {
+                                            // PRINT THE RECEIPT
+                                            printReceipt(transaction.price, transaction.id, transaction.cardId, transaction.status)
+                                            traceId = transaction.id
+                                            cardId = transaction.cardId
+                                            price = transaction.price
+                                            status = transaction.status
+
+                                            val i = Intent(this@QrisActivity, PaymentSuccessfulActivity::class.java)
+                                            i.putExtra("traceId", traceId)
+                                            i.putExtra("cardId", cardId)
+                                            i.putExtra("totalAmount", price)
+                                            i.putExtra("transactionStatus", status)
+
+                                            Timber.i("QRIS ACTIVITY : traceId: $traceId | cardId: $cardId | totalAmount: $price | transactionStatus: $status")
+
+                                            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                            startActivity(i)
+                                            finish()
+                                        }
+                                    }
+                                }
+                                .setNegativeButton("TIDAK") { dialog, _ ->
+                                    dialog.dismiss()
+                                    shouldProcessFrames = true
+                                }
+                                .setOnDismissListener {
+                                    shouldProcessFrames = true
+                                }
+                                .create()
+                                .show()
+                        } else {
+                            AlertDialog.Builder(this@QrisActivity)
+                                .setTitle("QRIS")
+                                .setMessage("Pesanan dengan Trace ID ${it[0].rawValue} tidak ditemukan!")
+                                .setPositiveButton("CLOSE") { dialog, _ ->
+                                    dialog.dismiss()
+                                    shouldProcessFrames = true
+                                }
+                                .setOnDismissListener {
+                                    shouldProcessFrames = true
+                                }
+                                .create()
+                                .show()
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+            }
+            .addOnCompleteListener {
+                imageProxy.close()
+            }
     }
 
     private fun printReceipt(totalAmount: Int, traceId: Int?, cardId: String?, transactionStatus: Boolean?) {
@@ -381,7 +575,7 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
-                    "VOID SALE",
+                    "SALE",
                     "ST",
                     48,
                     callback
@@ -393,25 +587,13 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                 // Format the totalAmount as rupiah currency
                 val formattedAmount = numberFormat.format(totalAmount)
                 mIPosPrinterService!!.printSpecifiedTypeText(
-                    "AMOUNT: - $formattedAmount",
+                    "AMOUNT: $formattedAmount",
                     "ST",
                     24,
                     callback
                 )
-                mIPosPrinterService!!.printBlankLines(1, 16, callback)
-                mIPosPrinterService!!.printSpecifiedTypeText(
-                    "SIGNATURE",
-                    "ST",
-                    48,
-                    callback
-                )
                 mIPosPrinterService!!.printBlankLines(1, 32, callback)
                 mIPosPrinterService!!.setPrinterPrintAlignment(1, callback)
-                mIPosPrinterService!!.printSpecifiedTypeText(
-                    """
-                    -------------------------------------
-                    """.trimIndent(), "ST", 32, callback
-                )
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND SERVICES AND AGREES TO PAY THE TOTAL SHOW HERE",
                     "ST",
@@ -420,7 +602,7 @@ class VoidSuccessfulActivity : AppCompatActivity() {
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
-                    "** BANK COPY **",
+                    "** CUSTOMER COPY **",
                     "ST",
                     24,
                     callback

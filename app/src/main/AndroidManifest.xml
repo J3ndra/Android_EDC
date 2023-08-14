@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.NFC" />
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
@@ -24,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.POSEDC"
         tools:targetApi="31">
+        <activity
+            android:name=".menu.qris.QrisActivity"
+            android:exported="false" />
         <activity
             android:name=".menu.reprint.ReprintActivity"
             android:exported="false" />

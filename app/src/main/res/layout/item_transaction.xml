@@ -28,6 +28,15 @@
             android:textSize="12sp"
             android:fontFamily="@font/inconsolata_regular"
             android:textAppearance="?android:textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/transactionStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STATUS : PAID"
+            android:textSize="12sp"
+            android:fontFamily="@font/inconsolata_regular"
+            android:textAppearance="?android:textAppearanceMedium" />
     </LinearLayout>
 
     <TextView

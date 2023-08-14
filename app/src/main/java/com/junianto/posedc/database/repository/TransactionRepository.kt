@@ -21,7 +21,15 @@ class TransactionRepository @Inject constructor(private val transactionDao: Tran
         transactionDao.updateTransaction(transaction)
     }
 
+    suspend fun updateTransactionStatus(transactionId: Int) {
+        transactionDao.updateTransactionStatus(transactionId)
+    }
+
     suspend fun deleteTransactionById(transactionId: Int) {
         transactionDao.deleteTransactionById(transactionId)
+    }
+
+    suspend fun checkIfTransactionExists(traceId: Int): Int {
+        return transactionDao.checkIfTransactionExists(traceId)
     }
 }

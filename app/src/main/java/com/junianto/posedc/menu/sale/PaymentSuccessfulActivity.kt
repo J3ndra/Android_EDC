@@ -199,6 +199,8 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
         val traceId = intent.getIntExtra("traceId", 0)
         val transactionStatus = intent.getBooleanExtra("transactionStatus", false)
 
+        Timber.i("PAYMENT SUCCESSFUL ACTIVITY : traceId: $traceId | cardId: $cardId | totalAmount: $totalAmount | transactionStatus: $transactionStatus")
+
         handler = HandlerUtils.MyHandler(iHandlerIntent)
 
         callback = object : IPosPrinterCallback.Stub() {
@@ -242,6 +244,7 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
         val btnRePrintReceipt = findViewById<Button>(R.id.btn_re_print_receipt)
 
         successMessageTextView.text = getString(R.string.payment_successful)
+
         val decimalFormatSymbols = DecimalFormatSymbols()
         decimalFormatSymbols.groupingSeparator = '.'
         val decimalFormat = DecimalFormat("#,###.###", decimalFormatSymbols)
@@ -276,7 +279,7 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -305,14 +308,14 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 // DATE
@@ -336,42 +339,42 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "DATE: $currentDate",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TIME: $currentTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REFF NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "APRV NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TRACE NO: $traceId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
@@ -386,7 +389,7 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)
@@ -415,11 +418,11 @@ class PaymentSuccessfulActivity : AppCompatActivity() {
                     48,
                     callback
                 )
-                mIPosPrinterService!!.printBlankLines(1, 64, callback)
+                mIPosPrinterService!!.printBlankLines(1, 32, callback)
                 mIPosPrinterService!!.setPrinterPrintAlignment(1, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     """
-                    -------------------------------------
+                    -----------------------
                     """.trimIndent(), "ST", 32, callback
                 )
                 mIPosPrinterService!!.printSpecifiedTypeText(

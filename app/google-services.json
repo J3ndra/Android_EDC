@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "356331396494",
+    "project_id": "pos-edc",
+    "storage_bucket": "pos-edc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:356331396494:android:6520b2726a6e22159e98df",
+        "android_client_info": {
+          "package_name": "com.junianto.posedc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "356331396494-l34jl3chu8b9c7k86hir4obg9j495lnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlMqT09nuIiVhUDfcx52p9VEQfBOG_kOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "356331396494-l34jl3chu8b9c7k86hir4obg9j495lnp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

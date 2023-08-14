@@ -29,7 +29,10 @@ class MenuActivity : AppCompatActivity() {
             MenuButton(R.drawable.settlement_icon, "SETTLEMENTS", "Sync of Transactions"),
             MenuButton(R.drawable.abort_icon, "VOID", "Abort the Transaction"),
             MenuButton(R.drawable.reprint_icon, "REPRINT", "Reprint of Receipt"),
-            MenuButton(R.drawable.reports_icon, "QRIS", "Reports"),
+            MenuButton(R.drawable.qris_icon, "QRIS", "Quick Response Code Indonesian Standard"),
+            MenuButton(R.drawable.nfc_icon, "E-MONEY", "Electric Money / NFC"),
+            MenuButton(R.drawable.settings_icon, "SETTINGS", "Settings parameter of data"),
+            MenuButton(R.drawable.about_icon, "ABOUT", "Information of the application")
             // Add more button items as needed
         )
 

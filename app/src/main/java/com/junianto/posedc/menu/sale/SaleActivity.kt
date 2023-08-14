@@ -431,7 +431,7 @@ class SaleActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "Bisnis dan Manajemen",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 4, callback)
@@ -455,28 +455,28 @@ class SaleActivity : AppCompatActivity() {
                     16,
                     callback
                 )
-                mIPosPrinterService!!.printBlankLines(1, 8, callback)
+                mIPosPrinterService!!.printBlankLines(1, 32, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "QRIS",
                     "ST",
                     24,
                     callback
                 )
-                mIPosPrinterService!!.printBlankLines(1, 8, callback)
-                mIPosPrinterService!!.printQRCode(traceId.toString(), 7, 1, callback)
-                mIPosPrinterService!!.printBlankLines(1, 24, callback)
+                mIPosPrinterService!!.printBlankLines(1, 16, callback)
+                mIPosPrinterService!!.printQRCode(traceId.toString(), 10, 3, callback)
+                mIPosPrinterService!!.printBlankLines(1, 32, callback)
                 mIPosPrinterService!!.setPrinterPrintAlignment(0, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TERMINAL ID : 0000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "MERCHANT ID : 0000000000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 // DATE
@@ -500,42 +500,42 @@ class SaleActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "DATE: $currentDate",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TIME: $currentTime",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "REFF NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "APRV NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "TRACE NO: $traceId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
@@ -550,7 +550,7 @@ class SaleActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARD NO: $cardId",
                     "ST",
-                    16,
+                    24,
                     callback
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)
@@ -572,20 +572,8 @@ class SaleActivity : AppCompatActivity() {
                     24,
                     callback
                 )
-                mIPosPrinterService!!.printBlankLines(1, 16, callback)
-                mIPosPrinterService!!.printSpecifiedTypeText(
-                    "SIGNATURE",
-                    "ST",
-                    48,
-                    callback
-                )
-                mIPosPrinterService!!.printBlankLines(1, 64, callback)
+                mIPosPrinterService!!.printBlankLines(1, 32, callback)
                 mIPosPrinterService!!.setPrinterPrintAlignment(1, callback)
-                mIPosPrinterService!!.printSpecifiedTypeText(
-                    """
-                    -------------------------------------
-                    """.trimIndent(), "ST", 32, callback
-                )
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "CARDHOLDER ACKNOWLEDGE RECEIPT OF GOODS AND SERVICES AND AGREES TO PAY THE TOTAL SHOW HERE",
                     "ST",
@@ -594,7 +582,7 @@ class SaleActivity : AppCompatActivity() {
                 )
                 mIPosPrinterService!!.printBlankLines(1, 16, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
-                    "** BANK COPY **",
+                    "** CUSTOMER COPY **",
                     "ST",
                     24,
                     callback

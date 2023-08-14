@@ -429,7 +429,7 @@ class SaleEnterPinActivity : AppCompatActivity() {
                 )
 
                 viewModel.saveTransactionAndNavigate(transaction) { insertedId ->
-                    printReceipt(totalAmount, insertedId.toInt(), cardId)
+                    printReceipt(totalAmount, insertedId.toInt(), cardId, status = true)
                     val i = Intent(this, PaymentSuccessfulActivity::class.java)
                     i.putExtra("totalAmount", totalAmount)
                     i.putExtra("cardId", cardId)
@@ -446,7 +446,7 @@ class SaleEnterPinActivity : AppCompatActivity() {
         }
     }
 
-    private fun printReceipt(totalAmount: Int, id: Int, cardId: String) {
+    private fun printReceipt(totalAmount: Int, id: Int, cardId: String, status: Boolean) {
         ThreadPoolManager.getInstance().executeTask {
             val mBitmap = BitmapFactory.decodeResource(resources, R.mipmap.tutwuri)
             try {
@@ -557,6 +557,14 @@ class SaleEnterPinActivity : AppCompatActivity() {
                 mIPosPrinterService!!.printBlankLines(1, 8, callback)
                 mIPosPrinterService!!.printSpecifiedTypeText(
                     "BATCH NO: 000000",
+                    "ST",
+                    24,
+                    callback
+                )
+                mIPosPrinterService!!.printBlankLines(1, 8, callback)
+                val paymentStatus = if (status) "PAID" else "SETTLED"
+                mIPosPrinterService!!.printSpecifiedTypeText(
+                    "STATUS: $paymentStatus",
                     "ST",
                     24,
                     callback
